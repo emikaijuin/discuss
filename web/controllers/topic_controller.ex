@@ -2,6 +2,7 @@ defmodule Discuss.TopicController do
   use Discuss.Web, :controller
   alias Discuss.Topic
   plug Discuss.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete]
+  plug :check_topic_owner when action in [:update, :edit, :delete]
 
   def index(conn, _params) do
     topics = Repo.all(Topic)
