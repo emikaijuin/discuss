@@ -67,4 +67,17 @@ defmodule Discuss.TopicController do
     |> redirect(to: topic_path(conn, :index))
   end
 
+  defp check_topic_owner(conn, _params) do
+    %{params: %{"id" => topic_id}} = conn
+
+    if Repo.get(Topic, topic_id).user_id == conn.assigns.user.id do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You can't edit that.")
+      |> redirect(to: topic_path(conn, :index))
+      |> halt()
+    end
+  end
+
 end
